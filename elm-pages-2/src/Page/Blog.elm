@@ -1,16 +1,21 @@
-module Page.Index exposing (Data, Model, Msg, page)
+module Page.Blog exposing (Data, Model, Msg, page)
 
 import DataSource exposing (DataSource)
 import Head
 import Head.Seo as Seo
-import Html exposing (a, h1, text)
+import Html exposing (a, h1, li, text, ul)
 import Html.Attributes exposing (href)
-import Page exposing (Page, StaticPayload)
+import Models.Article as Article exposing (Article)
+import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
 import Router
 import Shared
 import View exposing (View)
+
+
+type alias Data =
+    List (Article Msg)
 
 
 type alias Model =
@@ -36,7 +41,7 @@ page =
 
 data : DataSource Data
 data =
-    DataSource.succeed ()
+    Article.all
 
 
 head :
@@ -44,8 +49,8 @@ head :
     -> List Head.Tag
 head static =
     Seo.summary
-        { canonicalUrlOverride = Just "https://azimutt.app"
-        , siteName = "azimutt"
+        { canonicalUrlOverride = Nothing
+        , siteName = "elm-pages"
         , image =
             { url = Pages.Url.external "TODO"
             , alt = "elm-pages logo"
@@ -53,14 +58,10 @@ head static =
             , mimeType = Nothing
             }
         , locale = Nothing
-        , title = "Azimutt - Explore your database schema"
-        , description = "Database schema explorer that help you understand it: search and display what you need, in and out relations, find possible paths and much more..."
+        , title = "Azimutt's blog"
+        , description = "TODO"
         }
         |> Seo.website
-
-
-type alias Data =
-    ()
 
 
 view :
@@ -69,9 +70,10 @@ view :
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
-    { title = "Home"
+    { title = "Azimutt's blog"
     , body =
-        [ a [ href Router.blog ] [ text "Blog" ]
-        , h1 [] [ text "Home" ]
+        [ a [ href Router.home ] [ text "Home" ]
+        , h1 [] [ text "Blog" ]
+        , ul [] (static.data |> List.map (\article -> li [] [ a [ href (Router.blog_slug article.slug) ] [ text article.title ] ]))
         ]
     }
