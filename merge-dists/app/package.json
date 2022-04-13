@@ -1,0 +1,7 @@
+{
+  "name": "azimutt-app",
+  "scripts": {
+    "start": "elm-spa server",
+    "build": "elm-spa build"
+  }
+}

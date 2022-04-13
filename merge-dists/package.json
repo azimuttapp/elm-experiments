@@ -1,0 +1,13 @@
+{
+  "name": "azimutt",
+  "scripts": {
+    "start:web": "cd web && npm start",
+    "start:app": "cd app && npm start",
+    "build": "rm -rf dist && cd web && npm run build && cd ../app && npm run build && cd .. && cp -r web/dist dist && cp -r app/public dist/app && ./node_modules/regex-replace/cli.js 'src=\"/dist' 'src=\"/app/dist' './dist/app' --filecontents",
+    "preview": "npm run build && ./node_modules/serve/bin/serve.js -l 1234 dist"
+  },
+  "devDependencies": {
+    "regex-replace": "^2.3.1",
+    "serve": "^13.0.2"
+  }
+}
